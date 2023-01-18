@@ -1,13 +1,13 @@
-package com.example.firstapp.dataStructures.hashTable
+package com.example.firstapp.dataStructures.linkedList
 
 class Node(val key: String, var value: String) {
-    var nextNode: Node? = null
+    var next: Node? = null
 
     override fun toString(): String {
-        val nextNodeMessage = if (nextNode == null) {
+        val nextNodeMessage = if (next == null) {
             "null"
         } else {
-            nextNode!!.key
+            next!!.key
         }
         return "key:$key value:$value nextNodeKey:$nextNodeMessage"
     }

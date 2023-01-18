@@ -1,5 +1,8 @@
 package com.example.firstapp.dataStructures.hashTable
 
+import com.example.firstapp.dataStructures.linkedList.MyLinkedList
+import com.example.firstapp.dataStructures.linkedList.Node
+
 class MyHashTable {
 
     private val arraySize = 21
