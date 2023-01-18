@@ -32,7 +32,7 @@ class MyStack<T> {
 
     fun pop(): T {
         if (isEmpty()) {
-            return throw Exception()//emptyStackMessage
+            throw Exception()//emptyStackMessage
         }
 
         val topValue = top!!.value
