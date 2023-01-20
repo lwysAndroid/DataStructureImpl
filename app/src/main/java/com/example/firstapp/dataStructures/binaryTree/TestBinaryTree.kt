@@ -3,15 +3,19 @@ package com.example.firstapp.dataStructures.binaryTree
 fun main() {
     val rootNode = getBinarySearchTree()
     println("inOrder --------------------")
-    inOrder(rootNode = rootNode, doOnVisit = ::doOnVisit)
+    inOrder(visited = rootNode, doOnVisit = ::doOnVisit)
+    println()
+
+    println("inOrderOption --------------------")
+    inOrderOption(visited = rootNode, doOnVisit = ::doOnVisit)
     println()
 
     println("preOrder --------------------")
-    preOrder(rootNode = rootNode, doOnVisit = ::doOnVisit)
+    preOrder(visited = rootNode, doOnVisit = ::doOnVisit)
     println()
 
     println("postOrder --------------------")
-    postOrder(rootNode = rootNode, doOnVisit = ::doOnVisit)
+    postOrder(visited = rootNode, doOnVisit = ::doOnVisit)
 }
 
 fun doOnVisit(node: BinaryTreeNode<Int>) {

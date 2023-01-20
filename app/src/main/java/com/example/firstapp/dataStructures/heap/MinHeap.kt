@@ -15,6 +15,25 @@ class MinHeap {
         bubbleUpNodeInserted(insertedNode = insertedNode)
     }
 
+    fun extract(): Int {
+        if (root == null) {
+            throw Exception()
+        }
+
+        if (root?.leftChild == null && root?.rightChild == null) {
+            val tem = root!!
+            root = null
+            return tem.value
+        }
+        findBottommostRightmostNode(root!!)
+        return 1
+    }
+
+    private fun findBottommostRightmostNode(root: BinaryTreeNode<Int>) {
+        val deeperLevel = getDeeperLevelLeft(root)
+
+    }
+
     private fun bubbleUpNodeInserted(insertedNode: BinaryTreeNode<Int>) {
         var parent = insertedNode.parent
         while (parent != null && insertedNode.value < parent.value) {
@@ -71,50 +90,51 @@ class MinHeap {
 
     private fun addNodeToTheBottom(root: BinaryTreeNode<Int>, insertedNode: BinaryTreeNode<Int>) {
         val levelToInsertTheNewNode = getDeeperLevelRight(root)
-        findNodeToAddTheBottomNode(root, currentLevel = 0, desiredLevel = levelToInsertTheNewNode)
+        val nodeWhereShouldBeAddedTheNewNode = findNodeToAddTheBottomNode(
+            root,
+            desiredLevel = levelToInsertTheNewNode
+        )!!
         insertedNode.parent = nodeWhereShouldBeAddedTheNewNode
-        if (nodeWhereShouldBeAddedTheNewNode!!.leftChild == null) {
-            nodeWhereShouldBeAddedTheNewNode!!.leftChild = insertedNode
+        if (nodeWhereShouldBeAddedTheNewNode.leftChild == null) {
+            nodeWhereShouldBeAddedTheNewNode.leftChild = insertedNode
         } else {
-            nodeWhereShouldBeAddedTheNewNode!!.rightChild = insertedNode
+            nodeWhereShouldBeAddedTheNewNode.rightChild = insertedNode
         }
     }
-
-    var nodeWhereShouldBeAddedTheNewNode: BinaryTreeNode<Int>? = null
 
     private fun findNodeToAddTheBottomNode(
-        root: BinaryTreeNode<Int>?,
-        currentLevel: Int,
-        desiredLevel: Int
-    ) {
-        if (currentLevel == 0) {
-            nodeWhereShouldBeAddedTheNewNode = null
+        visitedNode: BinaryTreeNode<Int>,
+        currentLevel: Int = 0,
+        desiredLevel: Int,
+    ): BinaryTreeNode<Int>? {
+
+        if (currentLevel == desiredLevel && visitedNode.hasAllChildren().not()) {
+            return visitedNode
         }
-        if (root != null && nodeWhereShouldBeAddedTheNewNode == null) {
-            if (currentLevel == desiredLevel && (root.leftChild == null || root.rightChild == null)) {
-                nodeWhereShouldBeAddedTheNewNode = root
-            }
-            val newLevel = currentLevel + 1
+        val newLevel = currentLevel + 1
+        var newNodeFound = visitedNode.leftChild?.let {
             findNodeToAddTheBottomNode(
-                root.leftChild,
-                currentLevel = newLevel,
-                desiredLevel = desiredLevel
-            )
-            findNodeToAddTheBottomNode(
-                root.rightChild,
+                it,
                 currentLevel = newLevel,
                 desiredLevel = desiredLevel
             )
         }
+        if (newNodeFound != null) {
+            return newNodeFound
+        }
+        newNodeFound = visitedNode.rightChild?.let {
+            findNodeToAddTheBottomNode(
+                it,
+                currentLevel = newLevel,
+                desiredLevel = desiredLevel
+            )
+        }
+        return newNodeFound
     }
 
-    fun printWithLevels() {
-        printWithLevels(root = root, currentLevel = 0)
-    }
-
-    private fun printWithLevels(
-        root: BinaryTreeNode<Int>?,
-        currentLevel: Int
+    fun printWithLevels(
+        root: BinaryTreeNode<Int>? = this.root,
+        currentLevel: Int = 0
     ) {
         if (root != null) {
             val newLevel = currentLevel + 1
@@ -122,7 +142,7 @@ class MinHeap {
                 root.leftChild,
                 currentLevel = newLevel,
             )
-            println("value: ${root.value} parentValue: ${root.parent?.value} level: $currentLevel")
+            println("${root.value} level: $currentLevel")
             printWithLevels(
                 root.rightChild,
                 currentLevel = newLevel,
@@ -136,6 +156,16 @@ class MinHeap {
         while (currentNode.rightChild != null) {
             deeperLevel++
             currentNode = currentNode.rightChild!!
+        }
+        return deeperLevel
+    }
+
+    private fun getDeeperLevelLeft(root: BinaryTreeNode<Int>): Int {
+        var deeperLevel = 0
+        var currentNode = root
+        while (currentNode.leftChild != null) {
+            deeperLevel++
+            currentNode = currentNode.leftChild!!
         }
         return deeperLevel
     }

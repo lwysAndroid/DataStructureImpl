@@ -3,39 +3,51 @@ package com.example.firstapp.dataStructures.binaryTree
 /**
  * Having a Binary Search Tree this algorithm will traverse all the values
  * in ascending order
- * @param rootNode as the name says it is the root node
+ * @param visited as the name says it is the root node
  * @param doOnVisit lambda function that perform the desired operation in the node visited
  */
-fun <T> inOrder(rootNode: BinaryTreeNode<T>?, doOnVisit: (BinaryTreeNode<T>) -> Unit) {
-    if (rootNode != null) {
-        inOrder(rootNode = rootNode.leftChild, doOnVisit = doOnVisit)
-        doOnVisit(rootNode)
-        inOrder(rootNode = rootNode.rightChild, doOnVisit = doOnVisit)
+fun <T> inOrder(visited: BinaryTreeNode<T>?, doOnVisit: (BinaryTreeNode<T>) -> Unit) {
+    if (visited != null) {
+        inOrder(visited = visited.leftChild, doOnVisit = doOnVisit)
+        doOnVisit(visited)
+        inOrder(visited = visited.rightChild, doOnVisit = doOnVisit)
     }
 }
 
 /**
- * This algorithm will print first the root node
- * @param rootNode as the name says it is the root node
+ * Having a Binary Search Tree this algorithm will traverse all the values
+ * in ascending order
+ * @param visited as the name says it is the root node
  * @param doOnVisit lambda function that perform the desired operation in the node visited
  */
-fun <T> preOrder(rootNode: BinaryTreeNode<T>?, doOnVisit: (BinaryTreeNode<T>) -> Unit) {
-    if (rootNode != null) {
-        doOnVisit(rootNode)
-        preOrder(rootNode = rootNode.leftChild, doOnVisit = doOnVisit)
-        preOrder(rootNode = rootNode.rightChild, doOnVisit = doOnVisit)
+fun <T> inOrderOption(visited: BinaryTreeNode<T>, doOnVisit: (BinaryTreeNode<T>) -> Unit) {
+    visited.leftChild?.let { inOrderOption(visited = it, doOnVisit = doOnVisit) }
+    doOnVisit(visited)
+    visited.rightChild?.let { inOrderOption(visited = it, doOnVisit = doOnVisit) }
+}
+
+/**
+ * This algorithm will print first the root node
+ * @param visited as the name says it is the root node
+ * @param doOnVisit lambda function that perform the desired operation in the node visited
+ */
+fun <T> preOrder(visited: BinaryTreeNode<T>?, doOnVisit: (BinaryTreeNode<T>) -> Unit) {
+    if (visited != null) {
+        doOnVisit(visited)
+        preOrder(visited = visited.leftChild, doOnVisit = doOnVisit)
+        preOrder(visited = visited.rightChild, doOnVisit = doOnVisit)
     }
 }
 
 /**
  * This algorithm will print to the last the root node
- * @param rootNode as the name says it is the root node
+ * @param visited as the name says it is the root node
  * @param doOnVisit lambda function that perform the desired operation in the node visited
  */
-fun <T> postOrder(rootNode: BinaryTreeNode<T>?, doOnVisit: (BinaryTreeNode<T>) -> Unit) {
-    if (rootNode != null) {
-        postOrder(rootNode = rootNode.leftChild, doOnVisit = doOnVisit)
-        postOrder(rootNode = rootNode.rightChild, doOnVisit = doOnVisit)
-        doOnVisit(rootNode)
+fun <T> postOrder(visited: BinaryTreeNode<T>?, doOnVisit: (BinaryTreeNode<T>) -> Unit) {
+    if (visited != null) {
+        postOrder(visited = visited.leftChild, doOnVisit = doOnVisit)
+        postOrder(visited = visited.rightChild, doOnVisit = doOnVisit)
+        doOnVisit(visited)
     }
 }

@@ -4,4 +4,9 @@ class BinaryTreeNode<T>(var value: T) {
     var leftChild: BinaryTreeNode<T>? = null
     var rightChild: BinaryTreeNode<T>? = null
     var parent: BinaryTreeNode<T>? = null
+
+    fun hasAllChildren(): Boolean {
+        return leftChild != null && rightChild != null
+    }
+
 }
