@@ -12,52 +12,10 @@ class MinHeap {
             return
         }
         addNodeToTheBottom(root = root!!, insertedNode = insertedNode)
-        bubbleUpNodeInsertedRefactor(insertedNode = insertedNode)
+        bubbleUpNodeInserted(insertedNode = insertedNode)
     }
 
     private fun bubbleUpNodeInserted(insertedNode: BinaryTreeNode<Int>) {
-        var parent = insertedNode.parent
-        while (parent != null && insertedNode.value < parent.value) {
-            val parentLeftChild = parent.leftChild
-            val parentRightChild = parent.rightChild
-            val parentParent = parent.parent
-
-            val insertedLeftChild = insertedNode.leftChild
-            val insertedRightChild = insertedNode.rightChild
-
-            if (parentParent?.rightChild == parent) {
-                parentParent.rightChild = insertedNode
-            } else {
-                parentParent?.leftChild = insertedNode
-            }
-            insertedNode.parent = parentParent
-
-
-            if (parentRightChild == insertedNode) {
-                insertedNode.leftChild = parentLeftChild
-                parentLeftChild?.parent = insertedNode
-                insertedNode.rightChild = parent
-            } else {
-                insertedNode.leftChild = parent
-                insertedNode.rightChild = parentRightChild
-                parentRightChild?.parent = insertedNode
-            }
-
-            parent.leftChild = insertedLeftChild
-            parent.rightChild = insertedRightChild
-            insertedLeftChild?.parent = parent
-            insertedRightChild?.parent = parent
-
-            parent = parentParent
-            if (parent == null) {
-                root = insertedNode
-            }
-
-        }
-
-    }
-
-    private fun bubbleUpNodeInsertedRefactor(insertedNode: BinaryTreeNode<Int>) {
         var parent = insertedNode.parent
         while (parent != null && insertedNode.value < parent.value) {
             parent = swapParentWithChildNodes(parent = parent, child = insertedNode)
@@ -73,8 +31,8 @@ class MinHeap {
      *
      * @param parent parent node
      * @param child child node
-     * @return the new parent node of the child swapped, it returns null when the child is the head
-     * of the heap
+     * @return return the new parent node of the child swapped, it returns null if the child became
+     * the head of the heap
      */
     private fun swapParentWithChildNodes(
         parent: BinaryTreeNode<Int>,
