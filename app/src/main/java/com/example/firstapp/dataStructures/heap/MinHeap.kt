@@ -12,7 +12,7 @@ class MinHeap {
             return
         }
         addNodeToTheBottom(root = root!!, insertedNode = insertedNode)
-        bubbleUpNodeInserted(insertedNode = insertedNode)
+        bubbleUpNodeInsertedRefactor(insertedNode = insertedNode)
     }
 
     private fun bubbleUpNodeInserted(insertedNode: BinaryTreeNode<Int>) {
@@ -39,6 +39,8 @@ class MinHeap {
                 insertedNode.rightChild = parent
             } else {
                 insertedNode.leftChild = parent
+                insertedNode.rightChild = parentRightChild
+                parentRightChild?.parent = insertedNode
             }
 
             parent.leftChild = insertedLeftChild
@@ -53,6 +55,60 @@ class MinHeap {
 
         }
 
+    }
+
+    private fun bubbleUpNodeInsertedRefactor(insertedNode: BinaryTreeNode<Int>) {
+        var parent = insertedNode.parent
+        while (parent != null && insertedNode.value < parent.value) {
+            parent = swapParentWithChildNodes(parent = parent, child = insertedNode)
+            if (parent == null) {
+                root = insertedNode
+            }
+        }
+    }
+
+    /**
+     * Swap the parent with one of its children and return the new parent of the children after the
+     * swapping
+     *
+     * @param parent parent node
+     * @param child child node
+     * @return the new parent node of the child swapped, it returns null when the child is the head
+     * of the heap
+     */
+    private fun swapParentWithChildNodes(
+        parent: BinaryTreeNode<Int>,
+        child: BinaryTreeNode<Int>
+    ): BinaryTreeNode<Int>? {
+        val parentLeftChild = parent.leftChild
+        val parentRightChild = parent.rightChild
+        val parentParent = parent.parent
+
+        val childLeftChild = child.leftChild
+        val childRightChild = child.rightChild
+
+        if (parentParent?.rightChild == parent) {
+            parentParent.rightChild = child
+        } else {
+            parentParent?.leftChild = child
+        }
+        child.parent = parentParent
+
+        if (parentRightChild == child) {
+            child.rightChild = parent
+            child.leftChild = parentLeftChild
+            parentLeftChild?.parent = child
+        } else {
+            child.leftChild = parent
+            child.rightChild = parentRightChild
+            parentRightChild?.parent = child
+        }
+
+        parent.leftChild = childLeftChild
+        parent.rightChild = childRightChild
+        childLeftChild?.parent = parent
+        childRightChild?.parent = parent
+        return parentParent
     }
 
     private fun addNodeToTheBottom(root: BinaryTreeNode<Int>, insertedNode: BinaryTreeNode<Int>) {
