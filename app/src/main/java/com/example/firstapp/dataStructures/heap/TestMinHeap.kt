@@ -14,6 +14,8 @@ fun main() {
         insert(74)
         insert(89)
     }
+    minHeap.extract().also { println(it) }
+    minHeap.extract().also { println(it) }
     minHeap.printWithLevels()
 }
 
