@@ -3,10 +3,10 @@ package com.example.firstapp.problems
 /**
  * Given an array of distinct integer values, count the number of pair of integers that
  * have difference k. For example, given the array {1,7,5,9,2,12,3} and the difference
- * k = 2, there are four (4) pairs wth difference 2: (1 3) (3 5) (5 7) (7 9)
+ * k = 2, there are four (4) pairs with difference 2: (1 3) (3 5) (5 7) (7 9)
  */
 
-fun countPair(arr: Array<Int>, gap: Int): Int {
+fun countPair(arr: Array<Int>, gap: Int, printPairs: Boolean = false): Int {
     val hashArray = HashMap<Int, Boolean>()
     val hashMinPair = HashMap<Int, Boolean>()
     var counter = 0
@@ -17,18 +17,20 @@ fun countPair(arr: Array<Int>, gap: Int): Int {
         }
         val min = currentInt - gap
         val max = currentInt + gap
-        if (hashArray[min] != null) {
-            val currentCounter = validateMin(hashMin = hashMinPair, minValue = min)
-            counter += currentCounter
-            if (currentCounter != 0) {
-                println("($min,$currentInt)")
+        hashArray[min]?.let {
+            validateMin(hashMin = hashMinPair, minValue = min).also {
+                counter += it
+                if (printPairs && it == 1) {
+                    println("($min,$currentInt)")
+                }
             }
         }
-        if (hashArray[max] != null) {
-            val currentCounter = validateMin(hashMin = hashMinPair, minValue = currentInt)
-            counter += currentCounter
-            if (currentCounter != 0) {
-                println("($currentInt,$max)")
+        hashArray[max]?.let {
+            validateMin(hashMin = hashMinPair, minValue = currentInt).also {
+                counter += it
+                if (printPairs && it == 1) {
+                    println("($currentInt,$max)")
+                }
             }
         }
     }
