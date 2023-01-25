@@ -1,5 +1,6 @@
 package com.example.firstapp.problems
 
-fun main(){
-    countPairTest()
+fun main() {
+//    countPairTest()
+    indexOfPermutationsTest()
 }
