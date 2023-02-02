@@ -1,5 +1,6 @@
 package com.example.firstapp.algoexpert
 
 fun main() {
-    testGetNthFib()
+//    testGetNthFib()
+    testProductSum()
 }
