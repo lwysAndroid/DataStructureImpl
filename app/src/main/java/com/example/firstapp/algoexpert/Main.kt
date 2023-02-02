@@ -4,5 +4,6 @@ fun main() {
 //    testGetNthFib()
 //    testProductSum()
 //    testBinarySearch()
-    testFindThreeLargestNumbers()
+//    testFindThreeLargestNumbers()
+    testBubbleSort()
 }
