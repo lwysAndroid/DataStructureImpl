@@ -5,5 +5,6 @@ fun main() {
 //    testProductSum()
 //    testBinarySearch()
 //    testFindThreeLargestNumbers()
-    testBubbleSort()
+//    testBubbleSort()
+    testSelectionSort()
 }
