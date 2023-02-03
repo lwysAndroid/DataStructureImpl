@@ -7,5 +7,6 @@ fun main() {
 //    testFindThreeLargestNumbers()
 //    testBubbleSort()
 //    testSelectionSort()
-    testInsertionSort()
+//    testInsertionSort()
+    testIsPalindrome()
 }
