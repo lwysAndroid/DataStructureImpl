@@ -8,5 +8,6 @@ fun main() {
 //    testBubbleSort()
 //    testSelectionSort()
 //    testInsertionSort()
-    testIsPalindrome()
+//    testIsPalindrome()
+    testCaesarCipherEncryptor()
 }
