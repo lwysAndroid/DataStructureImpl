@@ -9,5 +9,6 @@ fun main() {
 //    testSelectionSort()
 //    testInsertionSort()
 //    testIsPalindrome()
-    testCaesarCipherEncryptor()
+//    testCaesarCipherEncryptor()
+    testThreeNumberSum()
 }
