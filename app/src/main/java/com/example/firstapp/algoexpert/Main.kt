@@ -11,5 +11,6 @@ fun main() {
 //    testIsPalindrome()
 //    testCaesarCipherEncryptor()
 //    testThreeNumberSum()
-    testSmallestDifference()
+//    testSmallestDifference()
+    testMoveElementToEnd()
 }
