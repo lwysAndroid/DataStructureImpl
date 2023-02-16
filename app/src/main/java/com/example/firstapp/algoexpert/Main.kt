@@ -12,5 +12,6 @@ fun main() {
 //    testCaesarCipherEncryptor()
 //    testThreeNumberSum()
 //    testSmallestDifference()
-    testMoveElementToEnd()
+//    testMoveElementToEnd()
+    testIsMonotonic()
 }
