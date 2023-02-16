@@ -13,5 +13,6 @@ fun main() {
 //    testThreeNumberSum()
 //    testSmallestDifference()
 //    testMoveElementToEnd()
-    testIsMonotonic()
+//    testIsMonotonic()
+    testSpiralTraverse()
 }
