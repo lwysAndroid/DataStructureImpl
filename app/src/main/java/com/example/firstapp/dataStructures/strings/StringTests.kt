@@ -6,7 +6,7 @@ fun main() {
     val repeat = 1000
     val charArray = CharArray(repeat * abcd.length)
     val strBuilder = StringBuilder()
-    (0 until 100).forEach {
+    (0 until repeat).forEach { _ ->
         strBuilder.append(abcd)
     }
     strBuilder.toCharArray(charArray)
