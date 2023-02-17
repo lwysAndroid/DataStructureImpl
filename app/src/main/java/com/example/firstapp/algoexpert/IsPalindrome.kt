@@ -1,13 +1,12 @@
 package com.example.firstapp.algoexpert
 
 fun isPalindrome(string: String): Boolean {
-    val charArray = string.toCharArray()
     var leftIndex = 0
-    var rightIndex = charArray.size - 1
+    var rightIndex = string.length - 1
 
     while (leftIndex <= rightIndex) {
-        val leftValue = charArray[leftIndex]
-        val rightValue = charArray[rightIndex]
+        val leftValue = string[leftIndex]
+        val rightValue = string[rightIndex]
         if (leftValue != rightValue) {
             return false
         }
