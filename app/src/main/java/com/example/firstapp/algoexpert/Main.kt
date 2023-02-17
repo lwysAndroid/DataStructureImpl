@@ -14,5 +14,6 @@ fun main() {
 //    testSmallestDifference()
 //    testMoveElementToEnd()
 //    testIsMonotonic()
-    testSpiralTraverse()
+//    testSpiralTraverse()
+    testLongestPeak()
 }
