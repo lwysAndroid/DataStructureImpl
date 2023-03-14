@@ -12,7 +12,7 @@ fun main(args: Array<String>) {
     }
 }
 
-fun getPrefix(listOfWords: List<String>): String {
+private fun getPrefix(listOfWords: List<String>): String {
 
     val firstWord = listOfWords[0]
     var prefixCounter = 0
