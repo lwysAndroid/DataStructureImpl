@@ -3,17 +3,17 @@ package com.example.firstapp.algoexpert
 import java.util.ArrayDeque
 
 
-class Node(name: String) {
+class NodeDFS(name: String) {
     val name: String = name
-    val children = mutableListOf<Node>()
+    val children = mutableListOf<NodeDFS>()
     val listOfNames = mutableListOf<String>()
 
 
     fun depthFirstSearch(): List<String> {
-        var currentNode: Node? = this
+        var currentNode: NodeDFS? = this
         val listOfNames = mutableListOf<String>()
-        val stackOfNodes = ArrayDeque<Node>()
-        val visitedNodes = HashMap<Node, Boolean>()
+        val stackOfNodes = ArrayDeque<NodeDFS>()
+        val visitedNodes = HashMap<NodeDFS, Boolean>()
 
 
         while (currentNode != null) {
@@ -55,7 +55,7 @@ class Node(name: String) {
         return listOfNames
     }
 
-    fun depthFirstSearch(node: Node = this): List<String> {
+    fun depthFirstSearch(node: NodeDFS = this): List<String> {
         val currentName = node.name
         listOfNames.add(currentName)
         node.children.forEach(){

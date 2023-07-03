@@ -2,13 +2,13 @@ package com.example.firstapp.algoexpert
 
 import java.util.*
 
-class Node(name: String) {
+class NodeBFS(name: String) {
 
     val name: String = name
-    val children = mutableListOf<Node>()
+    val children = mutableListOf<NodeBFS>()
 
     fun breadthFirstSearch(): List<String> {
-        val queueOfNodes: Queue<Node> = LinkedList()
+        val queueOfNodes: Queue<NodeBFS> = LinkedList()
         queueOfNodes.add(this)
         val listOfNames = mutableListOf<String>()
 
