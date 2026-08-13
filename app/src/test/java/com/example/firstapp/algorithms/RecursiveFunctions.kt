@@ -106,4 +106,41 @@ class RecursiveFunctions {
         }
     }
 
+    @Test
+    fun testFindMaxNumberRecursively() {
+        println("-----------------------------------------------")
+        val nonEmptyArray = arrayListOf(2, 4, 6, 1)
+        val maxNumberNonEmptyArray = findMaxNumberRecursively(array = nonEmptyArray)
+        println("maxNumberNonEmptyArray of $nonEmptyArray is $maxNumberNonEmptyArray")
+
+        val arrayWithOnElement = arrayListOf(5)
+        val maxNumberArrayWithOnElement = findMaxNumberRecursively(array = arrayWithOnElement)
+        println("maxNumberArrayWithOnElement of $arrayWithOnElement is $maxNumberArrayWithOnElement")
+
+        val emptyArray = arrayListOf<Int>()
+        val maxNumberEmptyArray = findMaxNumberRecursively(array = emptyArray)
+        println("maxNumberEmptyArray of $emptyArray is $maxNumberEmptyArray")
+        println("-----------------------------------------------")
+    }
+
+    private fun findMaxNumberRecursively(array: ArrayList<Int>): Int {
+        if (array.isEmpty()) {
+            return -1
+        }
+
+        if (array.size == 1) { // Base case of Termination condition
+            return array.first()
+        } else { // Recursive case
+            val lastNumber = array.last()
+            val subArray = ArrayList(array.subList(0, array.size - 1))
+            val currentMaxNumber = findMaxNumberRecursively(array = subArray)
+            return if (currentMaxNumber > lastNumber) {
+                currentMaxNumber
+            } else {
+                lastNumber
+            }
+        }
+
+    }
+
 }
