@@ -77,4 +77,33 @@ class RecursiveFunctions {
         }
     }
 
+    @Test
+    fun testCountElementsInAnArrayRecursively() {
+        println("-----------------------------------------------")
+        val nonEmptyArray = arrayListOf(2, 4, 6, 1)
+        val countNonEmptyArray = countElementsInAnArrayRecursively(array = nonEmptyArray)
+        println("countNonEmptyArray of $nonEmptyArray is $countNonEmptyArray")
+
+        val arrayWithOnElement = arrayListOf(5)
+        val countArrayWithOnElement = countElementsInAnArrayRecursively(array = arrayWithOnElement)
+        println("countArrayWithOnElement of $arrayWithOnElement is $countArrayWithOnElement")
+
+        val emptyArray = arrayListOf<Int>()
+        val countEmptyArray = countElementsInAnArrayRecursively(array = emptyArray)
+        println("countEmptyArray of $emptyArray is $countEmptyArray")
+        println("-----------------------------------------------")
+    }
+
+    private fun countElementsInAnArrayRecursively(array: ArrayList<Int>): Int {
+        if (array.isEmpty()) {
+            return 0
+        }
+        if (array.size == 1) { // Base case or Termination condition
+            return 1
+        } else { // Recursive case
+            val subArray = ArrayList(array.subList(0, array.size - 1))
+            return 1 + countElementsInAnArrayRecursively(array = subArray)
+        }
+    }
+
 }
