@@ -3,8 +3,11 @@ package com.example.firstapp.algorithms
 import org.junit.Test
 
 class SelectionSort {
-    private val unsortedArray = arrayListOf(5, 6, 4, 7, 3, 8, 2, 1, 9)
-    private val unsortedArrayWithDuplicatedValues = arrayListOf(5, 3, 6, 4, 7, 9, 3, 8, 2, 5, 1, 9)
+
+    companion object {
+        val unsortedArray = arrayListOf(5, 6, 4, 7, 3, 8, 2, 1, 9)
+        val unsortedArrayWithDuplicatedValues = arrayListOf(5, 3, 6, 4, 7, 9, 3, 8, 2, 5, 1, 9)
+    }
 
     @Test
     fun testSelectionSort() {
