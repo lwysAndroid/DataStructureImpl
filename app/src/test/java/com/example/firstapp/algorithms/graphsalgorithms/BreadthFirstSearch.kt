@@ -1,4 +1,4 @@
-package com.example.firstapp.algorithms.breadthfirstsearch
+package com.example.firstapp.algorithms.graphsalgorithms
 
 import com.example.firstapp.algorithms.printHyphensSeparation
 import org.junit.Test
@@ -7,7 +7,36 @@ import java.util.Queue
 
 class BreadthFirstSearch {
 
-    private val you = Person("you")
+    companion object {
+        val you = Person("you")
+
+        /**
+         * Models a directed graph using a HashMap, where each key represents a node and its
+         * value is an array of its immediate outbound neighbors (friends).
+         */
+        fun getGraph(): HashMap<Person, Array<Person>> {
+            val graph = HashMap<Person, Array<Person>>()
+
+            val alice = Person("alice")
+            val bob = Person("bob")
+            val claire = Person("claire")
+            val anuj = Person("anuj")
+            val peggy = Person("peggy")
+            val thom = Person("thom", isMangoSeller = true)
+            val jonny = Person("jonny")
+
+            graph[you] = arrayOf(alice, bob, claire)
+            graph[bob] = arrayOf(anuj, peggy)
+            graph[alice] = arrayOf(peggy)
+            graph[claire] = arrayOf(thom, jonny)
+            graph[anuj] = arrayOf()
+            graph[peggy] = arrayOf()
+            graph[thom] = arrayOf()
+            graph[jonny] = arrayOf()
+
+            return graph
+        }
+    }
 
     @Test
     fun testBreadthFirstSearch() {
@@ -67,30 +96,4 @@ class BreadthFirstSearch {
     }
 
 
-    /**
-     * Models a directed graph using a HashMap, where each key represents a node and its
-     * value is an array of its immediate outbound neighbors (friends).
-     */
-    private fun getGraph(): HashMap<Person, Array<Person>> {
-        val graph = HashMap<Person, Array<Person>>()
-
-        val alice = Person("alice")
-        val bob = Person("bob")
-        val claire = Person("claire")
-        val anuj = Person("anuj", isMangoSeller = true)
-        val peggy = Person("peggy")
-        val thom = Person("thom")
-        val jonny = Person("jonny")
-
-        graph[you] = arrayOf(alice, bob, claire)
-        graph[bob] = arrayOf(anuj, peggy)
-        graph[alice] = arrayOf(peggy)
-        graph[claire] = arrayOf(thom, jonny)
-        graph[anuj] = arrayOf()
-        graph[peggy] = arrayOf()
-        graph[thom] = arrayOf()
-        graph[jonny] = arrayOf()
-
-        return graph
-    }
 }
