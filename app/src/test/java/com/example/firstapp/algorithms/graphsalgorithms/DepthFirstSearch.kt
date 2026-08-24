@@ -2,7 +2,7 @@ package com.example.firstapp.algorithms.graphsalgorithms
 
 import com.example.firstapp.algorithms.graphsalgorithms.BreadthFirstSearch.Companion.getGraph
 import com.example.firstapp.algorithms.graphsalgorithms.BreadthFirstSearch.Companion.you
-import com.example.firstapp.algorithms.printHyphensSeparation
+import com.example.firstapp.printHyphensSeparation
 import org.junit.Test
 
 class DepthFirstSearch {

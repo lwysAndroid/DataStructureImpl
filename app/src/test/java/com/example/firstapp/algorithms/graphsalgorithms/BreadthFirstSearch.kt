@@ -1,6 +1,6 @@
 package com.example.firstapp.algorithms.graphsalgorithms
 
-import com.example.firstapp.algorithms.printHyphensSeparation
+import com.example.firstapp.printHyphensSeparation
 import org.junit.Test
 import java.util.ArrayDeque
 import java.util.Queue

@@ -1,4 +1,4 @@
-package com.example.firstapp.algorithms
+package com.example.firstapp
 
 fun printHyphensSeparation() {
     println("-----------------------------------------------")

@@ -1,6 +1,6 @@
 package com.example.firstapp.algorithms.graphsalgorithms.dijkstraalgorithm
 
-import com.example.firstapp.algorithms.printHyphensSeparation
+import com.example.firstapp.printHyphensSeparation
 import org.junit.Test
 
 /**
