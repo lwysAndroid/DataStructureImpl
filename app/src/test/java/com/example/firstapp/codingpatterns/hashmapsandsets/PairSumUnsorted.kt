@@ -9,10 +9,13 @@ class PairSumUnsorted {
     fun testPairSumUnsorted() {
         printHyphensSeparation()
         testAndPrintPairSumUnsorted(inputArray = arrayOf(-1, 3, 4, 2), target = 3)
+        testAndPrintPairSumUnsorted(inputArray = arrayOf(-1, 2, 14, 2), target = 4)
+        testAndPrintPairSumUnsorted(inputArray = arrayOf(-1, 3, 4, 2), target = 13)
     }
 
     private fun testAndPrintPairSumUnsorted(inputArray: Array<Int>, target: Int) {
-        val arrayOfIndexes = pairSumUnsorted(inputArray = inputArray, target = target)
+//        val arrayOfIndexes = pairSumUnsorted(inputArray = inputArray, target = target)
+        val arrayOfIndexes = pairSumUnsortedImproved(inputArray = inputArray, target = target)
 
         val message = if (arrayOfIndexes.isEmpty()) {
             "There aren't any combination that sum $target"
@@ -24,6 +27,29 @@ class PairSumUnsorted {
         println(inputArray.contentToString())
         println(message)
         printHyphensSeparation()
+    }
+
+    private fun pairSumUnsortedImproved(inputArray: Array<Int>, target: Int): Array<Int> {
+        // Hash map to store the integers as the key and the indexes as the values
+        val valueIndexesHashMap = HashMap<Int, Int>()
+
+        inputArray.forEachIndexed { index, value ->
+            val requiredComplement = target - value
+            val indexOfRequiredValue = valueIndexesHashMap[requiredComplement]
+            /*
+            * While we populate the hash map, we simultaneously check if the required complement
+            * (the value needed to reach the target sum) already exists. This works because a
+            * later value in the array can look up its required complement that was
+            * previously stored.
+            */
+            if (indexOfRequiredValue != null) {
+                return arrayOf(indexOfRequiredValue, index)
+            } else {
+                valueIndexesHashMap[value] = index
+            }
+        }
+        // return an empty array if we traverse all the array, and we didn't find a pair of numbers
+        return emptyArray()
     }
 
     private fun pairSumUnsorted(inputArray: Array<Int>, target: Int): Array<Int> {
@@ -49,7 +75,7 @@ class PairSumUnsorted {
                 }
             }
         }
-        // return an empty array if we traverse all the array and we didn't find a pair of numbers
+        // return an empty array if we traverse all the array, and we didn't find a pair of numbers
         return emptyArray()
     }
 
