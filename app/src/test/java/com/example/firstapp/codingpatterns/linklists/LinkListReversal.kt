@@ -13,7 +13,7 @@ class LinkListReversal {
     }
 
     private fun testAndPrintLinkListReversal(valuesArray: Array<Int>) {
-        val head = createLinkedList(valuesArray)
+        val head = createLinkedListFromArray(valuesArray)
         if (head != null) {
             printLinkedList(head = head)
 //            val reverseHead = linkListReversal(head = head)
@@ -69,35 +69,5 @@ class LinkListReversal {
             currentNode = nextNode,
             nextNode = nextNextNode
         )
-    }
-
-    private fun printLinkedList(head: ListNode<Int>?) {
-        if (head == null) {
-            println()
-            return
-        }
-        val value = head.value
-        val next = head.next
-        val message = if (next != null) {
-            "$value,"
-        } else {
-            "$value"
-        }
-        print(message)
-        printLinkedList(head = next)
-    }
-
-    private fun createLinkedList(valuesArray: Array<Int>): ListNode<Int>? {
-        var previousListNode: ListNode<Int>? = null
-        var head: ListNode<Int>? = null
-        valuesArray.forEach { value ->
-            val currentNode = ListNode(value = value)
-            if (previousListNode == null) {
-                head = currentNode
-            }
-            previousListNode?.next = currentNode
-            previousListNode = currentNode
-        }
-        return head
     }
 }
