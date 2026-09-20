@@ -15,6 +15,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
 import com.example.firstapp.ui.theme.FirstAppTheme
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 import kotlin.coroutines.ContinuationInterceptor
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
@@ -26,6 +29,7 @@ class MainActivity : ComponentActivity() {
 
     private val myOwnScope = CoroutineScope(context = Dispatchers.Default + SupervisorJob())
 
+    @OptIn(ExperimentalTime::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -58,7 +62,41 @@ class MainActivity : ComponentActivity() {
         /*lifecycleScope.launch {
             testAsyncBuilder()
         }*/
-        normalFunctionCallingSuspendFunctions(coroutineScope = lifecycleScope)
+//        normalFunctionCallingSuspendFunctions(coroutineScope = lifecycleScope)
+        val flowExample = flow {
+            (0..100).forEach {
+                emit(it)
+            }
+        }
+        with(lifecycleScope) {
+            launch {
+                /* flowExample.collect {
+                     println("CollectedForm Flow: $it")
+                 }*/
+            }
+        }
+
+        val mutableSharedFlow = MutableSharedFlow<Int>(replay = 2)
+        lifecycleScope.launch {
+            repeat(15) {
+                mutableSharedFlow.emit(it)
+                delay(duration = 1.seconds)
+            }
+        }
+
+        val jobOfMutableSharedFlow = lifecycleScope.launch {
+            delay(duration = 6.seconds)
+            mutableSharedFlow.collect {
+                println("CollectedForm MutableSharedFlow: $it")
+            }
+        }
+
+        lifecycleScope.launch {
+            delay(duration = 11.seconds)
+            jobOfMutableSharedFlow.cancel()
+            println("cancel jobOfMutableSharedFlow")
+        }
+
     }
 }
 
