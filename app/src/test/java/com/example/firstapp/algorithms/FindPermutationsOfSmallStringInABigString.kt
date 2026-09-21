@@ -10,6 +10,10 @@ class FindPermutationsOfSmallStringInABigString {
         printHyphensSeparation()
         testAndPrintFindPermutationsOfSmallerStringInABiggerString(
             smallString = "abbc",
+            bigString = "abbca"
+        )
+        testAndPrintFindPermutationsOfSmallerStringInABiggerString(
+            smallString = "abbc",
             bigString = "cbabadcbbabbcbabaabccbabc"
         )
         testAndPrintFindPermutationsOfSmallerStringInABiggerString(
@@ -25,12 +29,20 @@ class FindPermutationsOfSmallStringInABigString {
 
     private fun testAndPrintFindPermutationsOfSmallerStringInABiggerString(
         smallString: String,
-        bigString: String
+        bigString: String,
+        shouldUseImproved: Boolean = true
     ) {
-        val arrayOfPairs = findPermutationsOfSmallerStringInABiggerString(
-            smallString = smallString,
-            bigString = bigString,
-        )
+        val arrayOfPairs = if (shouldUseImproved) {
+            findPermutationsOfSmallerStringInABiggerStringImproved(
+                smallString = smallString,
+                bigString = bigString,
+            )
+        } else {
+            findPermutationsOfSmallerStringInABiggerString(
+                smallString = smallString,
+                bigString = bigString,
+            )
+        }
         println("Small String: $smallString")
         println("Big String: $bigString")
 
@@ -109,5 +121,91 @@ class FindPermutationsOfSmallStringInABigString {
         }
 
         return arrayWithPAirsOfIndexes.toTypedArray()
+    }
+
+    private fun findPermutationsOfSmallerStringInABiggerStringImproved(
+        smallString: String,
+        bigString: String
+    ): Array<Pair<Int, Int>> {
+        val stringsAreInvalid =
+            smallString.isEmpty() && bigString.isEmpty() && bigString.length < smallString.length
+
+        if (stringsAreInvalid) {
+            return emptyArray()
+        }
+
+        val arrayListOfPairIndexes = arrayListOf<Pair<Int, Int>>()
+        val smallStingHashMap = HashMap<Char, Int>()
+        smallString.forEach { currentCharacter ->
+            val currentAmount = smallStingHashMap[currentCharacter] ?: 0
+            smallStingHashMap[currentCharacter] = currentAmount + 1
+        }
+        // Setup initial state
+        var missingCharactersHashMap = HashMap(smallStingHashMap)
+        var extraCharactersHashMap = HashMap<Char, Int>()
+        var counter = smallString.length
+
+        bigString.forEachIndexed { indexOfCurrentCharacter, currentCharacter ->
+            val requiredAmountOFCurrentCharacter =
+                smallStingHashMap.get(key = currentCharacter) ?: 0
+            if (requiredAmountOFCurrentCharacter == 0) {
+                /* If a character doesn't exist in the small string reset all values to stop taking
+                * it into account the left part of the array
+                */
+                counter = smallString.length
+                missingCharactersHashMap = HashMap(smallStingHashMap)
+                extraCharactersHashMap = HashMap()
+            } else {
+                if (counter > 0) {
+                    counter--
+                }
+                val amountOfMissingCharacter = missingCharactersHashMap[currentCharacter] ?: 0
+                if (amountOfMissingCharacter > 0) {
+                    missingCharactersHashMap[currentCharacter] = amountOfMissingCharacter - 1
+                    if (counter == 0) {
+                        var areMissingCharacters = false
+                        missingCharactersHashMap.forEach { (_, i) ->
+                            if (i > 0) {
+                                areMissingCharacters = true
+                            }
+                        }
+                        if (!areMissingCharacters) {
+                            arrayListOfPairIndexes.add(
+                                Pair(
+                                    first = indexOfCurrentCharacter - (smallString.length - 1),
+                                    second = indexOfCurrentCharacter,
+                                )
+                            )
+                        }
+                    }
+                } else {
+                    (extraCharactersHashMap[currentCharacter] ?: 0).let {
+                        extraCharactersHashMap[currentCharacter] = it + 1
+                    }
+                }
+
+                if (counter == 0) {
+                    /*Remove the left most character to continue taking into account the next one,
+                    * it shoul be removed either from the extraCharactersHashMap or added to the
+                    * missing characters
+                    * */
+                    val leftMostCharacter =
+                        bigString[indexOfCurrentCharacter - (smallString.length - 1)]
+
+                    val extraAmountOfLeftMostCharacter =
+                        extraCharactersHashMap[leftMostCharacter] ?: 0
+                    if (extraAmountOfLeftMostCharacter > 0) {
+                        extraCharactersHashMap[leftMostCharacter] =
+                            extraAmountOfLeftMostCharacter - 1
+                    } else {
+                        (missingCharactersHashMap[leftMostCharacter] ?: 0).let {
+                            missingCharactersHashMap[leftMostCharacter] = it + 1
+                        }
+                    }
+                }
+            }
+        }
+
+        return arrayListOfPairIndexes.toTypedArray()
     }
 }
