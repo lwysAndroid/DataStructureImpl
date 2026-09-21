@@ -33,7 +33,7 @@ class FindPermutationsOfSmallStringInABigString {
         shouldUseImproved: Boolean = true
     ) {
         val arrayOfPairs = if (shouldUseImproved) {
-            findPermutationsOfSmallerStringInABiggerStringImproved(
+            findPermutations(
                 smallString = smallString,
                 bigString = bigString,
             )
@@ -127,56 +127,54 @@ class FindPermutationsOfSmallStringInABigString {
         smallString: String,
         bigString: String
     ): Array<Pair<Int, Int>> {
-        val stringsAreInvalid =
-            smallString.isEmpty() && bigString.isEmpty() && bigString.length < smallString.length
+        val stringsAreInvalid = smallString.isEmpty() || bigString.length < smallString.length
 
         if (stringsAreInvalid) {
             return emptyArray()
         }
 
-        val arrayListOfPairIndexes = arrayListOf<Pair<Int, Int>>()
         val smallStingHashMap = HashMap<Char, Int>()
         smallString.forEach { currentCharacter ->
             val currentAmount = smallStingHashMap[currentCharacter] ?: 0
             smallStingHashMap[currentCharacter] = currentAmount + 1
         }
         // Setup initial state
+        var missingCharactersSet: MutableSet<Char> = smallStingHashMap.keys.toMutableSet()
         var missingCharactersHashMap = HashMap(smallStingHashMap)
         var extraCharactersHashMap = HashMap<Char, Int>()
         var counter = smallString.length
 
+        val arrayListOfPairIndexes = arrayListOf<Pair<Int, Int>>()
+
         bigString.forEachIndexed { indexOfCurrentCharacter, currentCharacter ->
-            val requiredAmountOFCurrentCharacter =
+            val requiredAmountOfCurrentCharacter =
                 smallStingHashMap.get(key = currentCharacter) ?: 0
-            if (requiredAmountOFCurrentCharacter == 0) {
+            if (requiredAmountOfCurrentCharacter == 0) {
                 /* If a character doesn't exist in the small string reset all values to stop taking
                 * it into account the left part of the array
                 */
-                counter = smallString.length
+                missingCharactersSet = smallStingHashMap.keys.toMutableSet()
                 missingCharactersHashMap = HashMap(smallStingHashMap)
                 extraCharactersHashMap = HashMap()
+                counter = smallString.length
             } else {
                 if (counter > 0) {
                     counter--
                 }
                 val amountOfMissingCharacter = missingCharactersHashMap[currentCharacter] ?: 0
                 if (amountOfMissingCharacter > 0) {
-                    missingCharactersHashMap[currentCharacter] = amountOfMissingCharacter - 1
-                    if (counter == 0) {
-                        var areMissingCharacters = false
-                        missingCharactersHashMap.forEach { (_, i) ->
-                            if (i > 0) {
-                                areMissingCharacters = true
-                            }
-                        }
-                        if (!areMissingCharacters) {
-                            arrayListOfPairIndexes.add(
-                                Pair(
-                                    first = indexOfCurrentCharacter - (smallString.length - 1),
-                                    second = indexOfCurrentCharacter,
-                                )
+                    val missingAmount = amountOfMissingCharacter - 1
+                    missingCharactersHashMap[currentCharacter] = missingAmount
+                    if (missingAmount == 0) {
+                        missingCharactersSet.remove(element = currentCharacter)
+                    }
+                    if (missingCharactersSet.isEmpty()) {
+                        arrayListOfPairIndexes.add(
+                            Pair(
+                                first = indexOfCurrentCharacter - (smallString.length - 1),
+                                second = indexOfCurrentCharacter,
                             )
-                        }
+                        )
                     }
                 } else {
                     (extraCharactersHashMap[currentCharacter] ?: 0).let {
@@ -184,11 +182,11 @@ class FindPermutationsOfSmallStringInABigString {
                     }
                 }
 
+                /*Remove the left most character to continue taking into account the next one,
+                * it shoul be removed either from the extraCharactersHashMap or added to the
+                * missing characters
+                */
                 if (counter == 0) {
-                    /*Remove the left most character to continue taking into account the next one,
-                    * it shoul be removed either from the extraCharactersHashMap or added to the
-                    * missing characters
-                    * */
                     val leftMostCharacter =
                         bigString[indexOfCurrentCharacter - (smallString.length - 1)]
 
@@ -200,6 +198,7 @@ class FindPermutationsOfSmallStringInABigString {
                     } else {
                         (missingCharactersHashMap[leftMostCharacter] ?: 0).let {
                             missingCharactersHashMap[leftMostCharacter] = it + 1
+                            missingCharactersSet.add(leftMostCharacter)
                         }
                     }
                 }
@@ -207,5 +206,48 @@ class FindPermutationsOfSmallStringInABigString {
         }
 
         return arrayListOfPairIndexes.toTypedArray()
+    }
+
+    /*
+    * Standard Fixed Sliding Window Approach ({O}(N)$ Time, {O}(1)Space)
+    * The standard way to solve the Find All Anagrams / Permutations in a String problem
+    * is maintaining a fixed-size sliding window of length m using two frequency arrays
+    * (or maps) and a matches counter tracking how many unique characters match the target
+    * frequencies.
+    * */
+    fun findPermutations(smallString: String, bigString: String): Array<Pair<Int, Int>> {
+        if (smallString.isEmpty() || bigString.length < smallString.length) {
+            return emptyArray()
+        }
+
+        val sCount = IntArray(26)
+        val windowCount = IntArray(26)
+
+        // 1. Populate target frequency map
+        for (char in smallString) {
+            sCount[char - 'a']++
+        }
+
+        val results = mutableListOf<Pair<Int, Int>>()
+        val m = smallString.length
+
+        // 2. Slide window across bigString
+        for (i in bigString.indices) {
+            // Add right character to window
+            windowCount[bigString[i] - 'a']++
+
+            // Remove left character if window exceeds length M
+            if (i >= m) {
+                windowCount[bigString[i - m] - 'a']--
+            }
+
+            // Compare frequencies when window length reaches m
+            if (i >= m - 1 && sCount.contentEquals(windowCount)) {
+                val startIndex = i - m + 1
+                results.add(Pair(startIndex, i))
+            }
+        }
+
+        return results.toTypedArray()
     }
 }
