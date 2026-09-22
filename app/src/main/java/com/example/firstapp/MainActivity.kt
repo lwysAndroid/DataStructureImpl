@@ -1,31 +1,26 @@
 package com.example.firstapp
 
-import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
 import com.example.firstapp.ui.theme.FirstAppTheme
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.coroutines.ContinuationInterceptor
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
 
 class MainActivity : ComponentActivity() {
-
-    private val TAG = MainActivity::class.java.canonicalName
 
     private val myOwnScope = CoroutineScope(context = Dispatchers.Default + SupervisorJob())
 
@@ -34,16 +29,15 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             FirstAppTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
-                }
+                MainView()
             }
         }
 
+//        testCoroutines()
+        testFlows()
+    }
+
+    private fun testCoroutines() {
         /*with(lifecycleScope) {
             (0..10).forEach {
                 launch {
@@ -62,7 +56,10 @@ class MainActivity : ComponentActivity() {
         /*lifecycleScope.launch {
             testAsyncBuilder()
         }*/
-//        normalFunctionCallingSuspendFunctions(coroutineScope = lifecycleScope)
+        normalFunctionCallingSuspendFunctions(coroutineScope = lifecycleScope)
+    }
+
+    private fun testFlows() {
         val flowExample = flow {
             (0..100).forEach {
                 emit(it)
@@ -96,7 +93,6 @@ class MainActivity : ComponentActivity() {
             jobOfMutableSharedFlow.cancel()
             println("cancel jobOfMutableSharedFlow")
         }
-
     }
 }
 
@@ -200,33 +196,5 @@ private suspend fun coroutineSubtree() {
         }
         // Runs only after all children in the coroutineScope have completed
         println("Coroutine scope completed")
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(
-        text = "Hello $name!",
-        color = MaterialTheme.colors.primary,
-        style = MaterialTheme.typography.subtitle2,
-        fontSize = 24.sp
-    )
-}
-
-/*@Preview(
-    showBackground = true,
-    name = "Light Mode"
-)*/
-@Preview(
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true,
-    name = "Dark Mode"
-)
-@Composable
-fun DefaultPreview() {
-    FirstAppTheme {
-        Surface() {
-            Greeting("Android")
-        }
     }
 }
