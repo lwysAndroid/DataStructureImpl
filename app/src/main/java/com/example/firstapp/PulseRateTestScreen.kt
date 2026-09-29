@@ -20,10 +20,12 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
@@ -43,7 +46,6 @@ fun PulseRateTestScreen() {
     val alphaBoxColor = remember { Animatable(1f) }
     val animatedEffect: suspend CoroutineScope.() -> Unit =
         { // Restart the effect when the pulse rate changes
-            alphaBoxColor.snapTo(1f)
             while (isActive) {
                 delay(pulseRateMs.milliseconds) // Pulse the alphaBoxColor every pulseRateMs to alert the user
                 alphaBoxColor.animateTo(0f, animationSpec = tween(3500))
@@ -52,9 +54,22 @@ fun PulseRateTestScreen() {
         }
 
     LaunchedEffect(pulseRateMs) { // Restart the effect when the pulse rate changes
-        animatedEffect()
+//        alphaBoxColor.snapTo(1f)
+//        animatedEffect()
     }
 
+    // 1. Obtain a CoroutineScope bound to this Composable's lifecycle
+    val scope = rememberCoroutineScope()
+    DisposableEffect(pulseRateMs) {
+        scope.launch {
+            animatedEffect()
+        }
+        onDispose {
+            scope.launch {
+                alphaBoxColor.snapTo(1f)
+            }
+        }
+    }
     // UI Layout to test the animation and state changes
     Column(
         modifier = Modifier
