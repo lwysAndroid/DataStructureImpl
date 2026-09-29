@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlin.time.Duration.Companion.milliseconds
@@ -40,13 +41,18 @@ fun PulseRateTestScreen() {
     // out of time
     var pulseRateMs by remember { mutableLongStateOf(3000L) }
     val alphaBoxColor = remember { Animatable(1f) }
+    val animatedEffect: suspend CoroutineScope.() -> Unit =
+        { // Restart the effect when the pulse rate changes
+            alphaBoxColor.snapTo(1f)
+            while (isActive) {
+                delay(pulseRateMs.milliseconds) // Pulse the alphaBoxColor every pulseRateMs to alert the user
+                alphaBoxColor.animateTo(0f, animationSpec = tween(3500))
+                alphaBoxColor.animateTo(1f, animationSpec = tween(3500))
+            }
+        }
 
     LaunchedEffect(pulseRateMs) { // Restart the effect when the pulse rate changes
-        while (isActive) {
-            delay(pulseRateMs.milliseconds) // Pulse the alphaBoxColor every pulseRateMs to alert the user
-            alphaBoxColor.animateTo(0f, animationSpec = tween(2500))
-            alphaBoxColor.animateTo(1f, animationSpec = tween(2500))
-        }
+        animatedEffect()
     }
 
     // UI Layout to test the animation and state changes
@@ -79,6 +85,10 @@ fun PulseRateTestScreen() {
 
                 Text(
                     text = "Current Pulse Rate: ${pulseRateMs}ms",
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Text(
+                    text = "Current Color: ${alphaBoxColor.value}",
                     style = MaterialTheme.typography.titleMedium
                 )
             }

@@ -29,8 +29,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             FirstAppTheme {
-                MainView()
-//                PulseRateTestScreen()
+//                MainView()
+                PulseRateTestScreen()
             }
         }
 
