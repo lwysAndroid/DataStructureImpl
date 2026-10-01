@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -29,8 +29,8 @@ import androidx.compose.ui.unit.dp
  */
 @Composable
 fun InfiniteRelayoutLoopView() {
-    var firstColumHeight by remember() { mutableIntStateOf(0) }
-    var secondColumHeight by remember() { mutableIntStateOf(10) }
+    var firstColumHeight by remember() { mutableStateOf(0.dp) }
+    var secondColumHeight by remember() { mutableStateOf(10.dp) }
     //Set a debug point right at the line of this container Column
     Column(
         modifier = Modifier
@@ -38,10 +38,10 @@ fun InfiniteRelayoutLoopView() {
             .background(color = Color.DarkGray)
     ) {
         Column(
-            Modifier
-                .height(height = firstColumHeight.dp)
+            modifier = Modifier
+                .height(height = firstColumHeight)
                 .onSizeChanged { newSizeFirstColumn ->
-                    secondColumHeight = newSizeFirstColumn.height
+                    secondColumHeight = newSizeFirstColumn.height.dp
                 }
                 .background(color = Color.Red)
         ) {
@@ -49,9 +49,9 @@ fun InfiniteRelayoutLoopView() {
         }
         Column(
             Modifier
-                .height(height = secondColumHeight.dp)
+                .height(height = secondColumHeight)
                 .onSizeChanged { newSizeSecondColumn ->
-                    firstColumHeight = newSizeSecondColumn.height
+                    firstColumHeight = newSizeSecondColumn.height.dp
                 }
                 .background(color = Color.Green)
         ) {
