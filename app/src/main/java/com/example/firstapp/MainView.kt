@@ -48,6 +48,7 @@ fun MainView(
                 Text("Press me")
             }
 //            InfiniteRelayoutLoopView()
+            HeightToggleExample()
         }
     }
 }
