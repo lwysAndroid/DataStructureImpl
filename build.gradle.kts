@@ -1,7 +1,8 @@
+import org.gradle.kotlin.dsl.extra
+
 buildscript {
-    ext {
-        compose_ui_version = '1.12.1'
-    }
+    extra["compose_ui_version"] = "1.12.1"
+
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
     alias(libs.plugins.android.application) apply false
