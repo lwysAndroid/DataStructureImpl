@@ -1,17 +1,17 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.plugin.compose)
-    id ("kotlin-parcelize")
+    id("kotlin-parcelize")
 }
 
 android {
-    namespace =  "com.example.firstapp"
-    compileSdk = 37
+    namespace = "com.example.firstapp"
+    compileSdk = libs.versions.compile.sdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.example.firstapp"
-        minSdk = 32
-        targetSdk = 35
+        minSdk = libs.versions.min.sdk.get().toInt()
+        targetSdk = libs.versions.target.sdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
 

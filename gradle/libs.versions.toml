@@ -1,4 +1,7 @@
 [versions]
+min-sdk = "32"
+target-sdk = "35"
+compile-sdk = "37"
 activityCompose = "1.13.0"
 agp = "9.4.1"
 coreKtx = "1.19.1"
