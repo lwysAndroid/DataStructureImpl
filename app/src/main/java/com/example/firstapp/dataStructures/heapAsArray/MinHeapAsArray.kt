@@ -24,10 +24,10 @@ class MinHeapAsArray {
             return null
         }
         if (heapArray.size == 1) {
-            return heapArray.removeLast()
+            return heapArray.removeAt(heapArray.lastIndex)
         }
         val minValue = heapArray[0]
-        val lastValue = heapArray.removeLast()
+        val lastValue = heapArray.removeAt(heapArray.lastIndex)
         heapArray[0] = lastValue
         var currentIndex = 0
         var childIndexToSwap = findIndexToMoveDownTheParent(currentIndex)
